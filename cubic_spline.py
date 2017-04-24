@@ -1,6 +1,3 @@
-import matplotlib.pyplot as plt
-
-
 class CubicSpline(object):
     def __init__(self, x, y):
         self.x = x
@@ -24,7 +21,6 @@ class CubicSpline(object):
         l = [self.h[i] for i in range(1, self.nsplines - 1)]
         u = [self.h[i] for i in range(1, self.nsplines - 1)]
         d = [2 * (self.h[i] + self.h[i+1]) for i in range(self.nsplines - 1)]
-
 
         # Make upper triangle matrix:
         for i in range(self.nsplines-2):
@@ -64,22 +60,54 @@ class CubicSpline(object):
 
 
 if __name__ == '__main__':
-    from math import cos
+    from math import sin, cos
+    import matplotlib.pyplot as plt
 
-    def f(x):
-        return 0.5 * x * cos(3 * x)
+    group = 63
+    variant = 18
 
-    nodes = list(range(1, 10, 2))
+    a = 3
+    step = 2
+
+    if variant <= 10:
+        def f(x):
+            return sin(a * x / 2) + (a * x) ** (1 / 3)
+
+
+        k = variant - 1
+        start = -5 + k
+        stop = 3 + k
+
+    elif variant <= 20:
+        def f(x):
+            return 0.5 * x * cos(a * x)
+
+        k = variant - 11
+        start = -6 + k
+        stop = 2 + k
+
+    else:
+        def f(x):
+            return x ** 2 / 15 + cos(x + a)
+
+        k = 2 * (variant - 21)
+        start = -6 + k
+        stop = 2 + k
+
+    nodes = list(range(start, stop + 1, step))
 
     cs = CubicSpline(nodes, list(map(f, nodes)))
 
-    X = [1 + 8 * (i/100) for i in range(101)]
-    exact = list(map(f, X))
-    spline = list(map(cs, X))
+    X = [start + i * (stop - start) / 100 for i in range(101)]
 
-    print(spline)
+    exact = list(map(f, X))
+    polynom = list(map(cs, X))
+
+    for i in range(cs.nsplines):
+        print('S[{i}]: {a} + {b} * (x - {x}) + {c} * (x - {x})^2 + {d} * (x - {x})^3'.format(
+            i=i, a=cs.a[i], b=cs.b[i], c=cs.c[i]/2, d=cs.d[i]/6, x=cs.x[i]
+        ))
 
     plt.plot(X, exact)
-    plt.plot(X, spline)
-    plt.savefig('output/plot.png')
-    plt.show()
+    plt.plot(X, polynom)
+    plt.savefig('output/spline.png')

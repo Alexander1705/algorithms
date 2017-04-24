@@ -61,7 +61,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
     group = 63
-    variant = 19
+    variant = 18
 
     a = 3
     step = 2
@@ -91,12 +91,9 @@ if __name__ == '__main__':
         start = -6 + k
         stop = 2 + k
 
-    nodes = list(range(start, stop + 1, step))
+    nodes = list(range(start, stop + 1, 1))
 
-    if variant % 2:
-        P = LagrangePolynomial(nodes, list(map(f, nodes)))
-    else:
-        P = NewtonPolynomials(nodes, list(map(f, nodes)))
+    P = LagrangePolynomial(nodes, list(map(f, nodes)))
 
     X = [start + i * (stop - start) / 100 for i in range(101)]
 
