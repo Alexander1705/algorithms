@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -70,7 +69,7 @@ if __name__ == '__main__':
     def f(x):
         return 0.5 * x * cos(3 * x)
 
-    nodes = list(range(1, 10, 1))
+    nodes = list(range(1, 10, 2))
 
     cs = CubicSpline(nodes, list(map(f, nodes)))
 
