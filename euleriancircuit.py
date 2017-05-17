@@ -1,6 +1,6 @@
 import networkx as nx
 
-filename = 'datasets/' + input('Graph file: ')
+filename = 'datasets/' + input('Graph file: ') + '.graph'
 
 graph = nx.DiGraph()
 
@@ -14,7 +14,7 @@ with open(filename) as file:
 try:
     circuit = list(nx.eulerian_circuit(graph))
     print('G is Eulerian')
-    print(circuit)
+    print(' -> '.join(str(e[0]) for e in circuit))
 
 except nx.NetworkXError as e:
     try:
@@ -27,15 +27,15 @@ except nx.NetworkXError as e:
             graph.add_edge(a, b)
             path = list(nx.eulerian_circuit(graph))
             path.remove((a, b))
-            print(path)
+            print(' -> '.join(str(e[0]) for e in path))
         except nx.NetworkXError:
             try:
                 graph.remove_edge(a, b)
                 graph.add_edge(b, a)
                 path = list(nx.eulerian_circuit(graph))
                 path.remove((b, a))
-                print(path)
+                print(' -> '.join(str(e[0]) for e in path))
 
             except nx.NetworkXError:
-                print('lol')
+                print('G is not Eulerian')
 
