@@ -12,8 +12,9 @@ with open(filename) as file:
         graph.add_edge(u, v, capacity=c)
 
 
-s = int(input('Исток: '))
-t = int(input('Сток:  '))
+s = 0  # int(input('Исток: '))
+t = 5  # int(input('Сток:  '))
+
 flow = nx.maximum_flow(graph, s, t)
 
 print('Максимальный поток: ', flow[0])
